@@ -4,10 +4,10 @@ namespace TP5.Repositorios
 {
     public interface IPresupuestosRepository
     {
-        void AddProducto(int idPresupuesto, int idProducto, int cantidad);
+        void AddProducto(int idPresupuesto, PresupuestoDetalle detalle);
         void CreatePresupuesto(Presupuesto presupuesto);
-        void DeletePresupuesto(int idPresupuesto);
-        List<Presupuesto> GetAll();
+        void DeletePresupuestoById(int idPresupuesto);
+        List<Presupuesto> GetPresupuestos();
         Presupuesto GetPresupuestoById(int id);
     }
 }
