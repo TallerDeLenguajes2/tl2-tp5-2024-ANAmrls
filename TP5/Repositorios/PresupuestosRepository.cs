@@ -17,8 +17,8 @@ namespace TP5.Repositorios
                                + " VALUES (@NombreDestinatario, @FechaCreacion);";
 
                 SqliteCommand command = new(consulta, connection);
-                command.Parameters.Add(new SqliteParameter("@Nombredestinatario", presupuesto.NombreDestinatario));
-                command.Parameters.Add(new SqliteParameter("@FechaCreación", presupuesto.FechaCreacion));
+                command.Parameters.Add(new SqliteParameter("@NombreDestinatario", presupuesto.NombreDestinatario));
+                command.Parameters.Add(new SqliteParameter("@FechaCreacion", presupuesto.FechaCreacion));
                 command.ExecuteNonQuery();
 
                 connection.Close();
@@ -43,6 +43,7 @@ namespace TP5.Repositorios
                     DateOnly.TryParseExact((string?)reader["FechaCreacion"], "yyyy-MM-dd", out fecha);
                     var presupuesto = new Presupuesto
                     {
+                        IdPresupuesto = Convert.ToInt32(reader["idPresupuesto"]),
                         NombreDestinatario = reader["NombreDestinatario"].ToString(),
                         FechaCreacion = fecha
                     };
@@ -81,7 +82,7 @@ namespace TP5.Repositorios
             {
                 connection.Open();
 
-                var consulta = "DELETE FROM Presupuestos WHERE idPresupuesto= (@idPresupuesto);";
+                var consulta = "DELETE FROM Presupuestos WHERE idPresupuesto = (@idPresupuesto);";
 
                 SqliteCommand command = new SqliteCommand(consulta, connection);
                 command.Parameters.Add(new SqliteParameter("@idPresupuesto", idPresupuesto));
@@ -116,9 +117,10 @@ namespace TP5.Repositorios
                     {
                         DateOnly fecha = new();
                         DateOnly.TryParseExact((string?)reader["FechaCreacion"], "yyyy-MM-dd", out fecha);
+                        presupuesto.IdPresupuesto = Convert.ToInt32(reader["idPresupuesto"]);
                         presupuesto.NombreDestinatario = reader["NombreDestinatario"].ToString();
                         presupuesto.FechaCreacion = fecha;
-                        
+                        presupuesto.Detalle = new List<PresupuestoDetalle>();
                     }
 
                     var producto = new Producto
